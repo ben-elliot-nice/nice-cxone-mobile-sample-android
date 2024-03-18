@@ -372,7 +372,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun createThread(customContactFields: MutableMap<String, String>) {
-        when (chatViewModel.createThread(customContactFields)) {
+        when (chatViewModel.createThread()) {
             REASON_THREADS_REFRESH_REQUIRED -> showAlert(getString(R.string.warning_threads_refresh_required))
             REASON_THREAD_CREATION_FORBIDDEN -> showAlert(getString(R.string.warning_thread_creation_forbidden))
             GENERAL_FAILURE -> showAlert(getString(R.string.warning_general_failure))
