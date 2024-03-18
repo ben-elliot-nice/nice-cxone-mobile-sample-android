@@ -246,36 +246,38 @@ class MainActivity : AppCompatActivity(),
 
     // TODO move this to initial configuration together with Login
     private fun showInitialDialog() {
-        val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.enter_your_details)
-            .setCancelable(false)
-
-        val binding = CreateCustomerDialogBinding.inflate(layoutInflater, null, false)
-        builder.setView(binding.root)
-
-        val contactClientDialog = builder.create()
-
-        val firstNameTextInputLayout = binding.firstNameTextInputLayout
-        val lastNameTextInputLayout = binding.lastNameTextInputLayout
-        val acceptButton = binding.acceptButton
-
-        acceptButton.setOnClickListener {
-            val firstName = firstNameTextInputLayout.editText?.text?.toString().orEmpty()
-            val lastName = lastNameTextInputLayout.editText?.text?.toString().orEmpty()
-
-            lifecycleScope.launch {
-                if (firstName.isNotBlank() && lastName.isNotBlank()) {
-                    chatViewModel.setUserDetails(UserDetails(firstName, lastName))
-                    contactClientDialog.dismiss()
-                    openCreateThreadDialog()
-                } else {
-                    showAlert(getString(R.string.fields_cannot_be_empty))
-                }
-            }
-
-        }
-
-        contactClientDialog.show()
+        openCreateThreadDialog()
+//
+//        val builder = AlertDialog.Builder(this)
+//            .setTitle(R.string.enter_your_details)
+//            .setCancelable(false)
+//
+//        val binding = CreateCustomerDialogBinding.inflate(layoutInflater, null, false)
+//        builder.setView(binding.root)
+//
+//        val contactClientDialog = builder.create()
+//
+//        val firstNameTextInputLayout = binding.firstNameTextInputLayout
+//        val lastNameTextInputLayout = binding.lastNameTextInputLayout
+//        val acceptButton = binding.acceptButton
+//
+//        acceptButton.setOnClickListener {
+//            val firstName = firstNameTextInputLayout.editText?.text?.toString().orEmpty()
+//            val lastName = lastNameTextInputLayout.editText?.text?.toString().orEmpty()
+//
+//            lifecycleScope.launch {
+//                if (firstName.isNotBlank() && lastName.isNotBlank()) {
+//                    chatViewModel.setUserDetails(UserDetails(firstName, lastName))
+//                    contactClientDialog.dismiss()
+//                    openCreateThreadDialog()
+//                } else {
+//                    showAlert(getString(R.string.fields_cannot_be_empty))
+//                }
+//            }
+//
+//        }
+//
+//        contactClientDialog.show()
     }
 
     private fun showAlert(message: String) {
@@ -293,86 +295,88 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun openCreateThreadDialog() {
-        // TODO refactor
-        val dialogLayout = CreateThreadDialogBinding.inflate(layoutInflater)
-        val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.creating_thread)
-            .setView(dialogLayout.root)
-
-        val locationSpinner = dialogLayout.locationSpinner
-        val departmentSpinner = dialogLayout.departmentSpinner
-        val cancelButton = dialogLayout.cancelButton
-        val createThreadButton = dialogLayout.createThread
-        val locations = listOf(
-            SpinnerOption(name = "West Coast", id = "WC"),
-            SpinnerOption(name = "Northeast", id = "NE"),
-            SpinnerOption(name = "Southeast", id = "SE"),
-            SpinnerOption(name = "Midwest", id = "MW")
-        )
-        val departments = listOf(
-            SpinnerOption(name = "Sales", id = "sales"),
-            SpinnerOption(name = "Services", id = "services")
-        )
-
-        var selectedLocation = locations.first()
-        var selectedDepartment = departments.first()
-
-        val locationItems = locations.map { it.name }
-        val departmentItems = departments.map { it.name }
-        val locationsAdapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, layout.simple_spinner_dropdown_item, locationItems)
-        val departmentsAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            this,
-            layout.simple_spinner_dropdown_item,
-            departmentItems
-        )
-
-        locationSpinner.adapter = locationsAdapter
-        locationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                selectedLocation = locations[position]
-            }
-        }
-
-        departmentSpinner.adapter = departmentsAdapter
-        departmentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long,
-            ) {
-                selectedDepartment = departments[position]
-            }
-        }
-
-        val dialog = builder.create()
-        dialog.setCancelable(false)
-        dialog.show()
-
-        cancelButton.setOnClickListener {
-            dialog.cancel()
-            finish()
-        }
-        createThreadButton.setOnClickListener {
-            val customContactFields = mutableMapOf(
-                "department" to selectedDepartment.name,
-                "location" to selectedLocation.name,
-            )
-            dialog.dismiss()
-            createThread(customContactFields)
-        }
+        createThread()
+//
+//        // TODO refactor
+//        val dialogLayout = CreateThreadDialogBinding.inflate(layoutInflater)
+//        val builder = AlertDialog.Builder(this)
+//            .setTitle(R.string.creating_thread)
+//            .setView(dialogLayout.root)
+//
+//        val locationSpinner = dialogLayout.locationSpinner
+//        val departmentSpinner = dialogLayout.departmentSpinner
+//        val cancelButton = dialogLayout.cancelButton
+//        val createThreadButton = dialogLayout.createThread
+//        val locations = listOf(
+//            SpinnerOption(name = "West Coast", id = "WC"),
+//            SpinnerOption(name = "Northeast", id = "NE"),
+//            SpinnerOption(name = "Southeast", id = "SE"),
+//            SpinnerOption(name = "Midwest", id = "MW")
+//        )
+//        val departments = listOf(
+//            SpinnerOption(name = "Sales", id = "sales"),
+//            SpinnerOption(name = "Services", id = "services")
+//        )
+//
+//        var selectedLocation = locations.first()
+//        var selectedDepartment = departments.first()
+//
+//        val locationItems = locations.map { it.name }
+//        val departmentItems = departments.map { it.name }
+//        val locationsAdapter: ArrayAdapter<String> =
+//            ArrayAdapter<String>(this, layout.simple_spinner_dropdown_item, locationItems)
+//        val departmentsAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+//            this,
+//            layout.simple_spinner_dropdown_item,
+//            departmentItems
+//        )
+//
+//        locationSpinner.adapter = locationsAdapter
+//        locationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long,
+//            ) {
+//                selectedLocation = locations[position]
+//            }
+//        }
+//
+//        departmentSpinner.adapter = departmentsAdapter
+//        departmentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long,
+//            ) {
+//                selectedDepartment = departments[position]
+//            }
+//        }
+//
+//        val dialog = builder.create()
+//        dialog.setCancelable(false)
+//        dialog.show()
+//
+//        cancelButton.setOnClickListener {
+//            dialog.cancel()
+//            finish()
+//        }
+//        createThreadButton.setOnClickListener {
+//            val customContactFields = mutableMapOf(
+//                "department" to selectedDepartment.name,
+//                "location" to selectedLocation.name,
+//            )
+//            dialog.dismiss()
+//            createThread()
+//        }
     }
 
-    private fun createThread(customContactFields: MutableMap<String, String>) {
-        when (chatViewModel.createThread(customContactFields)) {
+    private fun createThread() {
+        when (chatViewModel.createThread()) {
             REASON_THREADS_REFRESH_REQUIRED -> showAlert(getString(R.string.warning_threads_refresh_required))
             REASON_THREAD_CREATION_FORBIDDEN -> showAlert(getString(R.string.warning_thread_creation_forbidden))
             GENERAL_FAILURE -> showAlert(getString(R.string.warning_general_failure))

@@ -48,8 +48,8 @@ internal class ChatViewModel @Inject constructor(
     }
 
     @CheckResult
-    fun createThread(customContactFields: Map<String, String> = emptyMap()): CreateThreadResult = runCatching {
-        val handler = threads.create(customContactFields)
+    fun createThread(): CreateThreadResult = runCatching {
+        val handler = threads.create()
         selectedThreadRepository.chatThreadHandler = handler
     }.foldToCreateThreadResult()
 

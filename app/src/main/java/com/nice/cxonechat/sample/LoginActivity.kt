@@ -61,6 +61,12 @@ class LoginActivity : AppCompatActivity() {
         requestContext.onResume()
     }
 
+    private suspend fun setLoginCustom() {
+        valueStoreage.setString(CODE_VERIFIER_KEY, "asdfjkhasdflkjhasdf")
+        valueStoreage.setString(AUTH_TOKEN_KEY, "asdfiouerkjlhsdfasdf")
+        startChatActivity()
+    }
+
     private suspend fun setLoginWithAmazon() {
         val codeVerifier = generateCodeVerifier()
         valueStoreage.setString(CODE_VERIFIER_KEY, codeVerifier)
@@ -120,7 +126,8 @@ class LoginActivity : AppCompatActivity() {
         val isAuthorizationEnabled = chat.configuration.isAuthorizationEnabled
 
         if (isAuthorizationEnabled) {
-            setLoginWithAmazon()
+//            setLoginWithAmazon()
+            setLoginCustom()
         } else {
             setLoginAsGuest()
         }
